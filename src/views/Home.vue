@@ -1,15 +1,19 @@
 <template>
   <div class="home">
     <el-container class="qm-content">
+      <!-- left -->
       <el-aside class="qm-aside" width="200px">
         <div class="qm-logo">
-          <el-avatar class="qm-logo-avatar" :size="100" :src="logoUrl"></el-avatar>
+          <avue-avatar class="qm-logo-avatar" :size="100" src=""></avue-avatar>
           <div class="qm-logo-name">
-            <span>{{logoName}}</span>
+            <span>趣 媒</span>
           </div>
         </div>
+        <QmMenu />
       </el-aside>
+      <!-- content -->
       <el-container>
+        <!-- content-head -->
         <el-header class="qm-header">
           <el-row>
             <el-col :span="12">
@@ -24,7 +28,7 @@
             <el-col :span="12">
               <div class="qm-header-right">
                 <div class="qm-header-right-box">
-                  <el-avatar class="qm-user-avatar" :size="50" :src="user.url"></el-avatar>
+                  <avue-avatar class="qm-user-avatar" :size="50" :src="user.url"></avue-avatar>
                 </div>
                 <div class="qm-header-right-box">
                   <span class="qm-user-name">{{user.name}}</span>
@@ -39,13 +43,17 @@
             </el-col>
           </el-row>
         </el-header>
-        <el-main>Main</el-main>
+        <!-- content-main -->
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
+import QmMenu from "../components/menu.vue"
 import axios from "axios";
 export default {
   name: "home",
@@ -59,11 +67,13 @@ export default {
       }
     };
   },
+  components:{
+    QmMenu
+  },
   created() {
+    //TODO: 首页LOGO及登陆用户的头像和名称获取
     axios.get("/api/admin").then(response => {
       if (response.data) {
-        this.logoUrl = response.data.logoUrl;
-        this.logoName = response.data.logoName;
         this.user = response.data.user;
       }
     });
@@ -100,13 +110,7 @@ export default {
 .qm-header-right {
   float: right;
 }
-.qm-user-avatar {
-  position: absolute;
-  margin-top: 5px;
-}
-.qm-user-name {
-  margin-left: 60px;
-}
+
 .qm-header-right-box {
   display: inline;
   margin-left: 10px;
