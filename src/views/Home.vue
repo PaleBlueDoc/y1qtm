@@ -4,12 +4,12 @@
       <!-- left -->
       <el-aside class="qm-aside" width="200px">
         <div class="qm-logo">
-          <avue-avatar class="qm-logo-avatar" :size="100" src=""></avue-avatar>
+          <avue-avatar class="qm-logo-avatar" :size="100" src></avue-avatar>
           <div class="qm-logo-name">
             <span>趣 媒</span>
           </div>
         </div>
-        <QmMenu />
+        <QmMenu :tabOption="tabOption" />
       </el-aside>
       <!-- content -->
       <el-container>
@@ -45,7 +45,7 @@
         </el-header>
         <!-- content-main -->
         <el-main>
-          <router-view></router-view>
+          <QmTabs :tabOption="tabOption"></QmTabs>
         </el-main>
       </el-container>
     </el-container>
@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import QmMenu from "../components/menu.vue"
+import QmMenu from "../components/menu.vue";
+import QmTabs from "../components/tabs.vue";
 import axios from "axios";
 export default {
   name: "home",
@@ -64,11 +65,24 @@ export default {
       user: {
         name: "",
         url: ""
+      },
+      tabOption: {
+        activeTabName: "1",
+        tabList: [
+          {
+            key: "1",
+            closable: false,
+            name: "1",
+            title: "首页",
+            component: () => import("../views/Index.vue")
+          }
+        ]
       }
     };
   },
-  components:{
-    QmMenu
+  components: {
+    QmMenu,
+    QmTabs
   },
   created() {
     //TODO: 首页LOGO及登陆用户的头像和名称获取

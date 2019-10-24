@@ -4,8 +4,7 @@
     background-color="#4d5ebd"
     text-color="#fff"
     active-text-color="#ffd04b"
-    router="true"
-    :default-active="firstMenuList?firstMenuList[0].path:''"
+    @select="select"
   >
     <template v-for="firstMenu in firstMenuList">
       <template v-if="firstMenu.secondMenuList">
@@ -34,6 +33,25 @@ import axios from "axios";
 
 export default {
   name: "qmMenu",
+  props: ["tabOption"],
+  methods: {
+    select: function(index) {
+      let newTab = {
+        key: index,
+        closable: true,
+        name: index,
+        title: "新增选项卡" + index,
+        component: () => import("../views" + index + ".vue")
+      };
+      if (
+        JSON.stringify(this.tabOption.tabList).indexOf(':"' + index + '",') ==
+        -1
+      ) {
+        this.tabOption.tabList.push(newTab);
+      }
+      this.tabOption.activeTabName = index;
+    }
+  },
   data() {
     return {
       firstMenuList: []
