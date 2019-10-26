@@ -21,7 +21,7 @@
       <template v-else>
         <el-menu-item :index="firstMenu.path" :key="firstMenu">
           <i :class="firstMenu.icon?firstMenu.icon:'el-icon-menu'"></i>
-          <span slot="title">{{firstMenu.name}}</span>
+          <span slot="title" :class="'qm-menuname-'+firstMenu.path">{{firstMenu.name}}</span>
         </el-menu-item>
       </template>
     </template>
@@ -35,12 +35,14 @@ export default {
   name: "qmMenu",
   props: ["tabOption"],
   methods: {
-    select: function(index) {
+    select: function(index, indexPath) {
+      indexPath;
       let newTab = {
         key: index,
         closable: true,
         name: index,
-        title: "新增选项卡" + index,
+        title: document.getElementsByClassName("qm-menuname-" + index)[0]
+          .innerHTML,
         component: () => import("../views" + index + ".vue")
       };
       if (
@@ -59,7 +61,7 @@ export default {
   },
   created() {
     //TODO: 菜单列表内容获取
-    axios.get("/api/menu").then(response => {
+    axios.get(this.GLOBAL.apiHost + "/api/menu").then(response => {
       if (response.data) {
         this.firstMenuList = response.data.firstMenuList;
       }

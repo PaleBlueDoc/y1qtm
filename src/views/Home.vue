@@ -86,7 +86,7 @@ export default {
   },
   created() {
     //TODO: 首页LOGO及登陆用户的头像和名称获取
-    axios.get("/api/admin").then(response => {
+    axios.get(this.GLOBAL.apiHost + "/api/admin").then(response => {
       if (response.data) {
         this.user = response.data.user;
       }
